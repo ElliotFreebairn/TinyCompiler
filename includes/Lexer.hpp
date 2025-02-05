@@ -4,27 +4,28 @@
 #include <string>
 #include <iostream>
 #include <cctype>
+#include "Token.h"
 
 
-class lexer {
+
+class Lexer {
 
   public:
-    lexer(std::string& source);
+    Lexer(std::string &source);
 
-    void nextChar()
+    void nextChar();
 
-    char peek() const;
-
+    char peek();
+  
     void abort(const std::string& message) const;
 
     void skipWhitespace();
 
     void skipComment();
 
-    std::string getToken();
+    Token getToken();
 
-  private:
-    std::string sourceCode;
+    std::string source;
     char curChar;
     size_t curPos;
 };
