@@ -6,8 +6,8 @@
 
 class Token {
 public:
-  std::string text;
-  int kind;
+  char text;
+  TokenType kind;
   Token(char tokenText, TokenType tokenKind);
 };
 

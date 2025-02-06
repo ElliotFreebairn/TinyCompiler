@@ -26,7 +26,9 @@ char Lexer::peek() {
 }
 
 Token Lexer::getToken() {
-  Token token = Token(' ', TokenType::EOFT);
+  skipWhitespace();
+  skipComment();
+  Token token = Token(' ', TokenType::DEF);
   switch(curChar) {
     case '+':
       token = Token(curChar, TokenType::PLUS);
@@ -46,11 +48,54 @@ Token Lexer::getToken() {
       break;
     case '\n':
       token = Token(curChar, TokenType::NEWLINE);
-      std::cout << "\n";
+      std::cout << "\\n";
       break;
     case '\0':
       token = Token(' ', TokenType::EOFT);
       std::cout << "\0";
+      break;
+    case '=':
+      if (peek() == '='){
+        char lastChar = curChar;
+        nextChar();
+        token = Token(lastChar + curChar, TokenType::EQEQ);
+        std::cout << "==";
+      } else {
+        token = Token(curChar, TokenType::EQ);
+        std::cout << "=";
+      }
+      break;
+    case '>':
+      if (peek() == '=') {
+        char lastChar = curChar;
+        nextChar();
+        token = Token(lastChar + curChar, TokenType::GTEQ);
+        std::cout << ">=";
+      } else {
+        token = Token(curChar, TokenType::GT);
+        std::cout << ">";
+      }
+      break;
+    case '<':
+      if (peek() == '=') {
+        char lastChar = curChar;
+        nextChar();
+        token = Token(lastChar + curChar, TokenType::LTEQ);
+        std::cout << "<=";
+      } else {
+        token = Token(curChar, TokenType::LT);
+        std::cout << "<";
+      }
+      break;
+    case '!':
+      if (peek() == '=') {
+        char lastChar = curChar;
+        nextChar();
+        token = Token(lastChar + curChar, TokenType::NOTEQ);
+        std::cout << "!=";
+      } else {
+        std::cout << "Expected !=, got !";
+      }
       break;
     default:
       std::cout << "No idea";
@@ -60,6 +105,22 @@ Token Lexer::getToken() {
   nextChar();
   return token;
 }
+
+void Lexer::skipWhitespace() {
+  while (curChar == ' ' || curChar == '\t' || curChar == '\r') {
+    nextChar();
+  }
+}
+
+void Lexer::skipComment() {
+  if (curChar == '#') {
+    while (curChar != '\n') {
+      nextChar();
+    }
+  }
+}
+
+
 
 
 
