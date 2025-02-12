@@ -2,7 +2,7 @@
 #include "./includes/Token.h"
 #include "./includes/TokenType.h"
 
-Token::Token(char tokenText, TokenType tokenKind) {
+Token::Token(std::string tokenText, TokenType tokenKind) {
   text = tokenText;
   kind = tokenKind;
 }

@@ -6,9 +6,9 @@
 
 class Token {
 public:
-  char text;
+  std::string text;
   TokenType kind;
-  Token(char tokenText, TokenType tokenKind);
+  Token(std::string tokenText, TokenType tokenKind);
 };
 
 #endif

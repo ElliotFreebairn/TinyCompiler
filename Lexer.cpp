@@ -28,75 +28,91 @@ char Lexer::peek() {
 Token Lexer::getToken() {
   skipWhitespace();
   skipComment();
-  Token token = Token(' ', TokenType::DEF);
+  Token token = Token(" ", TokenType::DEF);
   switch(curChar) {
     case '+':
-      token = Token(curChar, TokenType::PLUS);
-      std::cout << "+";
+      token = Token(std::string(1, curChar), TokenType::PLUS);
+      std::cout << "PLUS";
       break;
     case '-':
-      token = Token(curChar, TokenType::MINUS);
-      std::cout << "-";
+      token = Token(std::string(1, curChar), TokenType::MINUS);
+      std::cout << "MINUS";
       break;
     case '*':
-      token = Token(curChar, TokenType::ASTERISK);
-      std::cout << "*";
+      token = Token(std::string(1, curChar), TokenType::ASTERISK);
+      std::cout << "ASTERISK";
       break;
     case '/':
-      token = Token(curChar, TokenType::SLASH);
-      std::cout << "/";
+      token = Token(std::string(1, curChar), TokenType::SLASH);
+      std::cout << "SLASH";
       break;
     case '\n':
-      token = Token(curChar, TokenType::NEWLINE);
-      std::cout << "\\n";
+      token = Token(std::string(1, curChar), TokenType::NEWLINE);
+      std::cout << "NEWLINE";
       break;
     case '\0':
-      token = Token(' ', TokenType::EOFT);
-      std::cout << "\0";
+      token = Token(" ", TokenType::EOFT);
+      std::cout << "EOFT";
       break;
     case '=':
       if (peek() == '='){
         char lastChar = curChar;
         nextChar();
-        token = Token(lastChar + curChar, TokenType::EQEQ);
-        std::cout << "==";
+        token = Token(std::string(1, lastChar + curChar), TokenType::EQEQ);
+        std::cout << "EQEQ";
       } else {
-        token = Token(curChar, TokenType::EQ);
-        std::cout << "=";
+        token = Token(std::string(1, curChar), TokenType::EQ);
+        std::cout << "EQ";
       }
       break;
     case '>':
       if (peek() == '=') {
         char lastChar = curChar;
         nextChar();
-        token = Token(lastChar + curChar, TokenType::GTEQ);
-        std::cout << ">=";
+        token = Token(std::string(1, lastChar + curChar), TokenType::GTEQ);
+        std::cout << "GTEQ";
       } else {
-        token = Token(curChar, TokenType::GT);
-        std::cout << ">";
+        token = Token(std::string(1, curChar), TokenType::GT);
+        std::cout << "GT";
       }
       break;
     case '<':
       if (peek() == '=') {
         char lastChar = curChar;
         nextChar();
-        token = Token(lastChar + curChar, TokenType::LTEQ);
-        std::cout << "<=";
+        token = Token(std::string(1, lastChar + curChar), TokenType::LTEQ);
+        std::cout << "LTEQ";
       } else {
-        token = Token(curChar, TokenType::LT);
-        std::cout << "<";
+        token = Token(std::string(1, curChar), TokenType::LT);
+        std::cout << "LT";
       }
       break;
     case '!':
       if (peek() == '=') {
         char lastChar = curChar;
         nextChar();
-        token = Token(lastChar + curChar, TokenType::NOTEQ);
-        std::cout << "!=";
+        token = Token(std::string(1, lastChar + curChar), TokenType::NOTEQ);
+        std::cout << "NOTEQ";
       } else {
         std::cout << "Expected !=, got !";
       }
       break;
+    case '\"': {
+      nextChar();
+      int startPos = curPos;
+      
+      while(curChar != '\"') {
+        if(curChar == '\r' || curChar == '\n' || curChar == '\t' || curChar == '\\' || curChar == '&') {
+          std::cout << "You're cooked, illegal string"; 
+        }
+        nextChar();
+      }
+      std::string tokenText = source.substr(startPos, curPos - startPos);
+      token = Token(tokenText, TokenType::STRING);
+      std::cout << "STRING";
+      break;
+
+    }
     default:
       std::cout << "No idea";
       break;

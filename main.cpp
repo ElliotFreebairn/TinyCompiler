@@ -15,12 +15,12 @@ int main(int argc, char *argv[])
 //    lexer.nextChar();
 //  }
 //
-  std::string source = "+-*/>>= #This is a comment\n=!=";
+  std::string source = "+- \"This is a string\" # This is a comment!\n */"; 
     Lexer lexer = Lexer(source);
   
   Token token = lexer.getToken();
   while (token.kind != TokenType::EOFT) {
-    std::cout << token.kind << " " << std::endl;
+    std::cout << "\n";
     token = lexer.getToken();
 }
 }
